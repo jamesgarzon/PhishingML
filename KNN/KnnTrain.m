@@ -5,7 +5,7 @@ function Yesti = KnnTrain(Xval,Xent,Yent,k)
     dis=zeros(N,1);
 
     for j=1:M
-        dis=distancia(Xent, Xval(j,:));
+        dis=distance(Xent, Xval(j,:));
         [dis, sortIndexes]= sort(dis);
         temp = Yent(sortIndexes(1:k));
         Yesti(j)= mode (temp);

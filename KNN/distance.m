@@ -1,4 +1,4 @@
-function distances = distancia(Xtrain, Xval)
+function distances = distance(Xtrain, Xval)
     N = size(Xtrain, 1);
     distances = zeros(N, 1);
 
