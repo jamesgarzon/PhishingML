@@ -17,8 +17,8 @@ function [finalSensitivity, finalSpecificity, finalaccuracy, finalEfficiency] = 
             Ytrain=y(partition.training(fold));
             Ytest=y(partition.test(fold));
 
-            modeloRF=entrenarFOREST(trees(tree),Xtrain,Ytrain');
-            Yesti=testFOREST(modeloRF,Xtest);
+            modeloRF=TrainFOREST(trees(tree),Xtrain,Ytrain');
+            Yesti=TestFOREST(modeloRF,Xtest);
             FN=(sum(Yesti~=Ytest))-(sum(Yesti==-1 & Yesti~=Ytest));
             FP=(sum(Yesti~=Ytest))-(sum(Yesti==1 & Yesti~=Ytest));
             TP=sum(Yesti==Ytest & Yesti==-1);
