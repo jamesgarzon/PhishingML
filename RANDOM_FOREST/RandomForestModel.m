@@ -1,0 +1,52 @@
+function [finalSensitivity, finalSpecificity, finalPrecision, finalEfficiency] = RandomForestModel(x,y,folds,trees)
+    
+    sampleSize= size(x,1);
+    treeSize = size(trees,2);
+    
+    sensitivity=zeros(treeSize,folds);
+    specificity=zeros(treeSize,folds);
+    precision=zeros(treeSize,folds);
+    efficiency=zeros(treeSize,folds);
+    
+    for tree=1:treeSize
+        for fold=1:folds
+            rng('default');
+            partition=cvpartition(sampleSize,'Kfold',folds);
+            Xtrain=x(partition.training(fold),:);
+            Xtest=x(partition.test(fold),:);
+            Ytrain=y(partition.training(fold));
+            Ytest=y(partition.test(fold));
+
+            modeloRF=entrenarFOREST(trees(tree),Xtrain,Ytrain');
+            Yesti=testFOREST(modeloRF,Xtest);
+            FN=(sum(Yesti~=Ytest))-(sum(Yesti==-1 & Yesti~=Ytest));
+            FP=(sum(Yesti~=Ytest))-(sum(Yesti==1 & Yesti~=Ytest));
+            TP=sum(Yesti==Ytest & Yesti==-1);
+            TN=sum(Yesti==Ytest)-TP;
+            sensitivity(tree,fold)=(TP)/(TP+FN);
+            specificity(tree,fold)=(TN)/(TN+FP);
+            precision(tree,fold)=(TP)/(TP+FP);
+            efficiency(tree,fold)=(TP+TN)/(TP+TN+FP+FN);
+            texto=['Arboles = ', num2str(trees(tree)),' fold: ',num2str(fold)];
+            disp(texto);
+
+        end
+    end
+    finalSensitivity=zeros(treeSize,2);
+    finalSpecificity=zeros(treeSize,2);
+    finalPrecision=zeros(treeSize,2);
+    finalEfficiency=zeros(treeSize,2);
+       
+    for i=1:treeSize
+        finalEfficiency(i,1)=mean(efficiency(i,:));
+        finalEfficiency(i,2)=std(efficiency(i,:));
+        finalSpecificity(i,1)=mean(specificity(i,:));
+        finalSpecificity(i,2)=std(specificity(i,:));
+        finalSensitivity(i,1)=mean(sensitivity(i,:));
+        finalSensitivity(i,2)=std(sensitivity(i,:));
+        finalPrecision(i,1)=mean(precision(i,:));
+        finalPrecision(i,2)=std(precision(i,:));
+    end
+    
+end
+
