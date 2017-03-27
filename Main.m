@@ -5,9 +5,9 @@
 % Yoiner Gomez                    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-clc
-clear all
-close all
+clc;
+clear all;
+close all;
 
 addpath(genpath('KNN'))
 addpath(genpath('RANDOM_FOREST'))
