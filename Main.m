@@ -21,8 +21,8 @@ option=input('MENU PRINCIPAL\n1. k vecinos más cercanos \n2. Random Forest \n3.
 
 if option == 1
    neighbors=[1,3,5,7,9,11,13];
-   [sensitivity, specificity, precision, efficiency] = KnnModel(X,Y,folds,neighbors);
+   [sensitivity, specificity, accuracy, efficiency] = KnnModel(X,Y,folds,neighbors);
 elseif option == 2
     trees=[50 100 250 500 750 1000];
-    [sensitivity, specificity, precision, efficiency] = RandomForestModel(X,Y,folds,trees);
+    [sensitivity, specificity, accuracy, efficiency] = RandomForestModel(X,Y,folds,trees);
 end

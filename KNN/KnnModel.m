@@ -1,11 +1,11 @@
-function [finalSensitivity, finalSpecificity, finalPrecision, finalEfficiency] = KnnModel(x,y,folds,neighbors)
+function [finalSensitivity, finalSpecificity, finalaccuracy, finalEfficiency] = KnnModel(x,y,folds,neighbors)
     
     sampleSize= size(x,1);
     neighborsSize = size(neighbors,2);
     
     sensitivity=zeros(neighborsSize,folds);
     specificity=zeros(neighborsSize,folds);
-    precision=zeros(neighborsSize,folds);
+    accuracy=zeros(neighborsSize,folds);
     efficiency=zeros(neighborsSize,folds);
     
     for neighbor=1:neighborsSize
@@ -24,7 +24,7 @@ function [finalSensitivity, finalSpecificity, finalPrecision, finalEfficiency] =
             TN=sum(Yesti==Ytest)-TP;
             sensitivity(neighbor,fold)=(TP)/(TP+FN);
             specificity(neighbor,fold)=(TN)/(TN+FP);
-            precision(neighbor,fold)=(TP)/(TP+FP);
+            accuracy(neighbor,fold)=(TP)/(TP+FP);
             efficiency(neighbor,fold)=(TP+TN)/(TP+TN+FP+FN);
             message=['vecinos: ', num2str(neighbors(neighbor)),' fold: ',num2str(fold)];
             disp(message);
@@ -34,7 +34,7 @@ function [finalSensitivity, finalSpecificity, finalPrecision, finalEfficiency] =
     
     finalSensitivity=zeros(neighborsSize,2);
     finalSpecificity=zeros(neighborsSize,2);
-    finalPrecision=zeros(neighborsSize,2);
+    finalaccuracy=zeros(neighborsSize,2);
     finalEfficiency=zeros(neighborsSize,2);
        
     for i=1:neighborsSize
@@ -44,7 +44,7 @@ function [finalSensitivity, finalSpecificity, finalPrecision, finalEfficiency] =
         finalSpecificity(i,2)=std(specificity(i,:));
         finalSensitivity(i,1)=mean(sensitivity(i,:));
         finalSensitivity(i,2)=std(sensitivity(i,:));
-        finalPrecision(i,1)=mean(precision(i,:));
-        finalPrecision(i,2)=std(precision(i,:));
+        finalaccuracy(i,1)=mean(accuracy(i,:));
+        finalaccuracy(i,2)=std(accuracy(i,:));
     end
 end

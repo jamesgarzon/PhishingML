@@ -1,11 +1,11 @@
-function [finalSensitivity, finalSpecificity, finalPrecision, finalEfficiency] = RandomForestModel(x,y,folds,trees)
+function [finalSensitivity, finalSpecificity, finalaccuracy, finalEfficiency] = RandomForestModel(x,y,folds,trees)
     
     sampleSize= size(x,1);
     treeSize = size(trees,2);
     
     sensitivity=zeros(treeSize,folds);
     specificity=zeros(treeSize,folds);
-    precision=zeros(treeSize,folds);
+    accuracy=zeros(treeSize,folds);
     efficiency=zeros(treeSize,folds);
     
     for tree=1:treeSize
@@ -25,7 +25,7 @@ function [finalSensitivity, finalSpecificity, finalPrecision, finalEfficiency] =
             TN=sum(Yesti==Ytest)-TP;
             sensitivity(tree,fold)=(TP)/(TP+FN);
             specificity(tree,fold)=(TN)/(TN+FP);
-            precision(tree,fold)=(TP)/(TP+FP);
+            accuracy(tree,fold)=(TP)/(TP+FP);
             efficiency(tree,fold)=(TP+TN)/(TP+TN+FP+FN);
             texto=['Arboles = ', num2str(trees(tree)),' fold: ',num2str(fold)];
             disp(texto);
@@ -34,7 +34,7 @@ function [finalSensitivity, finalSpecificity, finalPrecision, finalEfficiency] =
     end
     finalSensitivity=zeros(treeSize,2);
     finalSpecificity=zeros(treeSize,2);
-    finalPrecision=zeros(treeSize,2);
+    finalaccuracy=zeros(treeSize,2);
     finalEfficiency=zeros(treeSize,2);
        
     for i=1:treeSize
@@ -44,8 +44,8 @@ function [finalSensitivity, finalSpecificity, finalPrecision, finalEfficiency] =
         finalSpecificity(i,2)=std(specificity(i,:));
         finalSensitivity(i,1)=mean(sensitivity(i,:));
         finalSensitivity(i,2)=std(sensitivity(i,:));
-        finalPrecision(i,1)=mean(precision(i,:));
-        finalPrecision(i,2)=std(precision(i,:));
+        finalaccuracy(i,1)=mean(accuracy(i,:));
+        finalaccuracy(i,2)=std(accuracy(i,:));
     end
     
 end
