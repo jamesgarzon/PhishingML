@@ -17,7 +17,7 @@ function [finalSensitivity, finalSpecificity, finalPrecision, finalEfficiency] =
             Ytrain=y(partition.training(fold));
             Ytest=y(partition.test(fold));
 
-            Yesti=vecinosCercanos(Xtest,Xtrain,Ytrain,neighbors(neighbor));
+            Yesti=KnnTrain(Xtest,Xtrain,Ytrain,neighbors(neighbor));
             FN=(sum(Yesti~=Ytest))-(sum(Yesti==-1 & Yesti~=Ytest));
             FP=(sum(Yesti~=Ytest))-(sum(Yesti==1 & Yesti~=Ytest));
             TP=sum(Yesti==Ytest & Yesti==-1);

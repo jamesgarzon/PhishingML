@@ -1,4 +1,4 @@
-function Yesti = vecinosCercanos(Xval,Xent,Yent,k)
+function Yesti = KnnTrain(Xval,Xent,Yent,k)
     N=size(Xent,1);
     M=size(Xval,1);
     Yesti=zeros(M,1);
