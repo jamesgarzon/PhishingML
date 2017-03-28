@@ -11,10 +11,11 @@ close all;
 
 addpath(genpath('KNN'))
 addpath(genpath('RANDOM_FOREST'))
+addpath(genpath('SVM'))
 
 load('dataset.mat');
-X=dataset(:,1:30);
-Y=dataset(:,end);
+X=dataset(1:400,1:10);
+Y=dataset(1:400,end);
 folds = 10;
 
 option=input('MENU PRINCIPAL\n1. k vecinos más cercanos \n2. Random Forest \n3. Máquina de Soporte Vectorial \n4. Funciones Discriminantes Gaussianas \n5. Redes neuronales \n6. Discriminante de Fisher \n7. Correlación de Pearson \n8. SFS \nSeleccione una opción:  ');
@@ -25,4 +26,10 @@ if option == 1
 elseif option == 2
     trees=[50 100 250 500 750 1000];
     [sensitivity, specificity, accuracy, efficiency] = RandomForestModel(X,Y,folds,trees);
+elseif option == 3
+    %gamma=[0.01 0.1 1 10 100];
+    %box=[0.01 0.1 1 10 100];
+    gamma=[0.01 0.1 1 10 100];
+    box=[0.01 0.1 1 10 100];
+    [sensitivity, specificity, accuracy, efficiency] = SvmModel(X,Y,folds,gamma,box);
 end
