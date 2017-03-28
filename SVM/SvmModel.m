@@ -6,7 +6,7 @@ function [finalSensitivity, finalSpecificity, finalaccuracy, finalEfficiency] = 
     specificity=zeros(5,folds);
     accuracy=zeros(5,folds);
     efficiency=zeros(5,folds);
-    index = 1;
+
   for boxind=1:5
     for gammaind=1:5
         for fold=1:folds
@@ -25,8 +25,8 @@ function [finalSensitivity, finalSpecificity, finalaccuracy, finalEfficiency] = 
             Ytrain2(Ytrain==-1)=1;
             modelo2=entrenarSVM(Xtrain,Ytrain2,'classification',box(boxind),gamma(gammaind));
             [~,Yest1]=testSVM(modelo1,Xtest);
-            [~,Yest2]=testSVM(modelo2,Xtest);            
-            [~,Yesti] =max([Yest1,Yest2],[],2); 
+            [~,Yest2]=testSVM(modelo2,Xtest);
+            [~,Yesti] =max([Yest1,Yest2],[],2);
             MatrizConfusion=zeros(2,2);
             for i=1:size(Xtest,1)
                 posTest= 1;
@@ -39,21 +39,21 @@ function [finalSensitivity, finalSpecificity, finalaccuracy, finalEfficiency] = 
             TN=MatrizConfusion(1,1);
             FN=MatrizConfusion(1,2);
             FP=MatrizConfusion(2,1);
-            sensitivity(index,fold)=(TP)/(TP+FN);
-            specificity(index,fold)=(TN)/(TN+FP);
-            accuracy(index,fold)=(TP)/(TP+FP);
-            efficiency(index,fold)=(TP+TN)/(TP+TN+FP+FN);
+            sensitivity(gammaind,fold)=(TP)/(TP+FN);
+            specificity(gammaind,fold)=(TN)/(TN+FP);
+            accuracy(gammaind,fold)=(TP)/(TP+FP);
+            efficiency(gammaind,fold)=(TP+TN)/(TP+TN+FP+FN);
 
             texto=['Gamma = ', num2str(gamma(gammaind)),' fold: ',num2str(fold), ' Box: ',num2str(box(boxind))];
             disp(texto);
-            index = index + 1;
+
         end
     end
-    finalEfficiency=zeros(25,2);
-    finalSpecificity=zeros(25,2);
-    finalSensitivity=zeros(25,2);
-    finalaccuracy=zeros(25,2);
-    for i=1:25
+    finalEfficiency=zeros(5,2);
+    finalSpecificity=zeros(5,2);
+    finalSensitivity=zeros(5,2);
+    finalaccuracy=zeros(5,2);
+    for i=1:5
         finalEfficiency(i,1)=mean(efficiency(i,:));
         finalEfficiency(i,2)=std(efficiency(i,:));
         finalSpecificity(i,1)=mean(specificity(i,:));
@@ -63,16 +63,15 @@ function [finalSensitivity, finalSpecificity, finalaccuracy, finalEfficiency] = 
         finalaccuracy(i,1)=mean(accuracy(i,:));
         finalaccuracy(i,2)=std(accuracy(i,:));
     end
-    %{
-    toc
-    texto1=['resultadosSVM/resultadosSeleccion/eficienciaFinalsvm',num2str(boxind),'.mat'];
-    texto2=['resultadosSVM/resultadosSeleccion/especificidadFinalsvm',num2str(boxind),'.mat'];
-    texto3=['resultadosSVM/resultadosSeleccion/sensibilidadFinalsvm',num2str(boxind),'.mat'];
-    texto4=['resultadosSVM/resultadosSeleccion/precisionFinalsvm',num2str(boxind),'.mat'];
-    save(texto1,'eficienciaFinalsvm');
-    save(texto2,'especificidadFinalsvm');
-    save(texto3,'sensibilidadFinalsvm');
-    save(texto4,'precisionFinalsvm');
-    %}
-  end
 
+    texto1=['SVM/RESULTS/eficienciaFinalsvm',num2str(boxind),'.mat'];
+    texto2=['SVM/RESULTS/especificidadFinalsvm',num2str(boxind),'.mat'];
+    texto3=['SVM/RESULTS/sensibilidadFinalsvm',num2str(boxind),'.mat'];
+    texto4=['SVM/RESULTS/precisionFinalsvm',num2str(boxind),'.mat'];
+    save(texto1,'finalEfficiency');
+    save(texto2,'finalSpecificity');
+    save(texto3,'finalSensitivity');
+    save(texto4,'finalaccuracy');
+
+  end
+end
