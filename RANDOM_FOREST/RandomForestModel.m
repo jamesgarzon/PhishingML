@@ -1,14 +1,14 @@
-function [finalSensitivity, finalSpecificity, finalaccuracy, finalEfficiency] = KnnModel(x,y,folds,neighbors)
+function [finalSensitivity, finalSpecificity, finalaccuracy, finalEfficiency] = RandomForestModel(x,y,folds,trees)
     
     sampleSize= size(x,1);
-    neighborsSize = size(neighbors,2);
+    treeSize = size(trees,2);
     
-    sensitivity=zeros(neighborsSize,folds);
-    specificity=zeros(neighborsSize,folds);
-    accuracy=zeros(neighborsSize,folds);
-    efficiency=zeros(neighborsSize,folds);
+    sensitivity=zeros(treeSize,folds);
+    specificity=zeros(treeSize,folds);
+    accuracy=zeros(treeSize,folds);
+    efficiency=zeros(treeSize,folds);
     
-    for neighbor=1:neighborsSize
+    for tree=1:treeSize
         for fold=1:folds
             rng('default');
             partition=cvpartition(sampleSize,'Kfold',folds);
@@ -17,27 +17,27 @@ function [finalSensitivity, finalSpecificity, finalaccuracy, finalEfficiency] = 
             Ytrain=y(partition.training(fold));
             Ytest=y(partition.test(fold));
 
-            Yesti=KnnTrain(Xtest,Xtrain,Ytrain,neighbors(neighbor));
+            modeloRF=entrenarFOREST(trees(tree),Xtrain,Ytrain');
+            Yesti=testFOREST(modeloRF,Xtest);
             FN=(sum(Yesti~=Ytest))-(sum(Yesti==-1 & Yesti~=Ytest));
             FP=(sum(Yesti~=Ytest))-(sum(Yesti==1 & Yesti~=Ytest));
             TP=sum(Yesti==Ytest & Yesti==-1);
             TN=sum(Yesti==Ytest)-TP;
-            sensitivity(neighbor,fold)=(TP)/(TP+FN);
-            specificity(neighbor,fold)=(TN)/(TN+FP);
-            accuracy(neighbor,fold)=(TP)/(TP+FP);
-            efficiency(neighbor,fold)=(TP+TN)/(TP+TN+FP+FN);
-            message=['vecinos: ', num2str(neighbors(neighbor)),' fold: ',num2str(fold)];
-            disp(message);
+            sensitivity(tree,fold)=(TP)/(TP+FN);
+            specificity(tree,fold)=(TN)/(TN+FP);
+            accuracy(tree,fold)=(TP)/(TP+FP);
+            efficiency(tree,fold)=(TP+TN)/(TP+TN+FP+FN);
+            texto=['Arboles = ', num2str(trees(tree)),' fold: ',num2str(fold)];
+            disp(texto);
 
         end
     end
-    
-    finalSensitivity=zeros(neighborsSize,2);
-    finalSpecificity=zeros(neighborsSize,2);
-    finalaccuracy=zeros(neighborsSize,2);
-    finalEfficiency=zeros(neighborsSize,2);
+    finalSensitivity=zeros(treeSize,2);
+    finalSpecificity=zeros(treeSize,2);
+    finalaccuracy=zeros(treeSize,2);
+    finalEfficiency=zeros(treeSize,2);
        
-    for i=1:neighborsSize
+    for i=1:treeSize
         finalEfficiency(i,1)=mean(efficiency(i,:));
         finalEfficiency(i,2)=std(efficiency(i,:));
         finalSpecificity(i,1)=mean(specificity(i,:));
@@ -47,4 +47,6 @@ function [finalSensitivity, finalSpecificity, finalaccuracy, finalEfficiency] = 
         finalaccuracy(i,1)=mean(accuracy(i,:));
         finalaccuracy(i,2)=std(accuracy(i,:));
     end
+    
 end
+
