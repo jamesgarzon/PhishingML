@@ -34,7 +34,7 @@ function [finalSensitivity, finalSpecificity, finalaccuracy, finalEfficiency] = 
     
     finalSensitivity=zeros(neighborsSize,2);
     finalSpecificity=zeros(neighborsSize,2);
-    finalaccuracy=zeros(neighborsSize,2);
+    finalAccuracy=zeros(neighborsSize,2);
     finalEfficiency=zeros(neighborsSize,2);
        
     for i=1:neighborsSize
@@ -44,7 +44,7 @@ function [finalSensitivity, finalSpecificity, finalaccuracy, finalEfficiency] = 
         finalSpecificity(i,2)=std(specificity(i,:));
         finalSensitivity(i,1)=mean(sensitivity(i,:));
         finalSensitivity(i,2)=std(sensitivity(i,:));
-        finalaccuracy(i,1)=mean(accuracy(i,:));
-        finalaccuracy(i,2)=std(accuracy(i,:));
+        finalAccuracy(i,1)=mean(accuracy(i,:));
+        finalAccuracy(i,2)=std(accuracy(i,:));
     end
 end
