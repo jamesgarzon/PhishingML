@@ -12,7 +12,7 @@ close all;
 addpath(genpath('KNN'))
 addpath(genpath('RANDOM_FORES5T'))
 addpath(genpath('SVM'))
-addpath(genpath('ANN'))
+addpath(genpath('RNA'))
 
 load('dataset.mat');
 X=dataset(:,1:30);
@@ -34,6 +34,6 @@ elseif option == 3
 elseif option == 5
      epochs=[100 400 800 1000];
      neurons=[50 55 60 65 70];
-     [sensitivity, specificity, accuracy, efficiency] = AnnModel(X,Y,folds,neurons, epochs);
+     [sensitivity, specificity, accuracy, efficiency] = RNAModel(X,Y,folds,neurons, epochs);
      retults = [sensitivity, specificity, accuracy, efficiency];
 end

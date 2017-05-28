@@ -1,4 +1,4 @@
-function [finalSensitivity, finalSpecificity, finalAccuracy, finalEfficiency] = AnnModel(x,y,folds,neurons, epochs)
+function [finalSensitivity, finalSpecificity, finalAccuracy, finalEfficiency] = RNAModel(x,y,folds,neurons, epochs)
 
     sampleSize= size(x,1);
     neuronsSize = size(neurons,2);
@@ -51,9 +51,9 @@ function [finalSensitivity, finalSpecificity, finalAccuracy, finalEfficiency] = 
                 efficiency(index,fold)=(TP+TN)/(TP+TN+FP+FN); 
                 texto=['Epocas: ',num2str(epochs(epoch)),'  Neuronas: ', num2str(neurons(neuron)),'  fold: ',num2str(fold)];
                 disp(texto);
-                index = index + 1;
+                
             end
-            
+            index = index + 1;
         end
     end
     finalEfficiency=zeros((neuronsSize*epochsSize),2);
