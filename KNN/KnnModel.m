@@ -1,4 +1,4 @@
-function [finalSensitivity, finalSpecificity, finalaccuracy, finalEfficiency] = KnnModel(x,y,folds,neighbors)
+function [finalSensitivity, finalSpecificity, finalAccuracy, finalEfficiency] = KnnModel(x,y,folds,neighbors)
     
     sampleSize= size(x,1);
     neighborsSize = size(neighbors,2);
