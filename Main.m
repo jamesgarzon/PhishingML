@@ -10,8 +10,9 @@ clear all;
 close all;
 
 addpath(genpath('KNN'))
-addpath(genpath('RANDOM_FOREST'))
+addpath(genpath('RANDOM_FORES5T'))
 addpath(genpath('SVM'))
+addpath(genpath('ANN'))
 
 load('dataset.mat');
 X=dataset(:,1:30);
@@ -31,5 +32,8 @@ elseif option == 3
     box=[0.01 0.1 1 10 100];
     [sensitivity, specificity, accuracy, efficiency] = SvmModel(X,Y,folds,gamma,box);
 elseif option == 5
-    
+     epochs=[100 400 800 1000];
+     neurons=[50 55 60 65 70];
+     [sensitivity, specificity, accuracy, efficiency] = AnnModel(X,Y,folds,neurons, epochs);
+     retults = [sensitivity, specificity, accuracy, efficiency];
 end

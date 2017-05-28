@@ -1,0 +1,69 @@
+function [finalSensitivity, finalSpecificity, finalAccuracy, finalEfficiency] = AnnModel(x,y,folds,neurons, epochs)
+
+    sampleSize= size(x,1);
+    nueronsSize = size(neurons,2);
+    networksY = zeros(sampleSize,2);
+    epochsSize = size(epochs,2);
+    
+    sensitivity=zeros(nueronsSize,folds);
+    specificity=zeros(nueronsSize,folds);
+    accuracy=zeros(nueronsSize,folds);
+    efficiency=zeros(nueronsSize,folds);
+
+    for epoch = 1:epochs
+    for n=1:nueronsSize
+        for i=1:sampleSize
+            if(y(i)==1)
+                networksY(i,1)=1;
+            else
+                networksY(i,2)=1;
+            end
+        end
+        for fold=1:folds
+
+            %%% partition %%%
+
+            rng('default');
+            particion=cvpartition(sampleSize,'Kfold',folds);
+            Xtrain=x(particion.training(fold),:);
+            Xtest=x(particion.test(fold),:);
+            Ytrain = networksY(particion.training(fold),:);
+            [~,Ytest]=max(networksY(particion.test(fold),:),[],2);
+
+            %%% Train %%%
+
+            Modelo=TrainRNA(Xtrain,Ytrain,neurons(n));
+
+            %%% Validation %%%
+
+            Yesti=testRNA(Modelo,Xtest);
+            [~,Yesti]=max(Yesti,[],2);
+
+            FN=sum(Yesti==2 & Yesti~=Ytest);
+            FP=sum(Yesti==1 & Yesti~=Ytest);
+            TP=sum(Yesti==Ytest & Yesti==1);
+            TN=sum(Yesti==Ytest)-TP;
+            sensitivity(n,fold)=(TP)/(TP+FN);
+            specificity(n,fold)=(TN)/(TN+FP);
+            accuracy(n,fold)=(TP)/(TP+FP);
+            efficiency(n,fold)=(TP+TN)/(TP+TN+FP+FN); 
+            texto=['Neuronas = ', num2str(neurons(n)),' fold: ',num2str(fold)];
+            disp(texto);
+        end   
+    end
+    end
+    finalEfficiency=zeros(nueronsSize,2);
+    finalSpecificity=zeros(nueronsSize,2);
+    finalSensitivity=zeros(nueronsSize,2);
+    finalAccuracy=zeros(nueronsSize,2);
+    for i=1:nueronsSize
+        finalEfficiency(i,1)=mean(efficiency(i,:));
+        finalEfficiency(i,2)=std(efficiency(i,:));
+        finalSpecificity(i,1)=mean(specificity(i,:));
+        finalSpecificity(i,2)=std(specificity(i,:));
+        finalSensitivity(i,1)=mean(sensitivity(i,:));
+        finalSensitivity(i,2)=std(sensitivity(i,:));
+        finalAccuracy(i,1)=mean(accuracy(i,:));
+        finalAccuracy(i,2)=std(accuracy(i,:));
+    end
+end
