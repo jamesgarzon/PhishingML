@@ -30,4 +30,6 @@ elseif option == 3
     gamma=[0.01 0.1 1 10 100];
     box=[0.01 0.1 1 10 100];
     [sensitivity, specificity, accuracy, efficiency] = SvmModel(X,Y,folds,gamma,box);
+elseif option == 5
+    
 end
