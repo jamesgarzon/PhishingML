@@ -11,6 +11,7 @@ close all;
 
 addpath(genpath('KNN'))
 addpath(genpath('RANDOM_FOREST'))
+addpath(genpath('SVM'))
 
 load('dataset.mat');
 X=dataset(:,1:30);
@@ -25,4 +26,8 @@ if option == 1
 elseif option == 2
     trees=[50 100 250 500 750 1000];
     [sensitivity, specificity, accuracy, efficiency] = RandomForestModel(X,Y,folds,trees);
+elseif option == 3
+    gamma=[0.01 0.1 1 10 100];
+    box=[0.01 0.1 1 10 100];
+    [sensitivity, specificity, accuracy, efficiency] = SvmModel(X,Y,folds,gamma,box);
 end
