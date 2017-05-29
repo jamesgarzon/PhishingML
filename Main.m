@@ -13,6 +13,7 @@ addpath(genpath('KNN'))
 addpath(genpath('RANDOM_FORES5T'))
 addpath(genpath('SVM'))
 addpath(genpath('RNA'))
+addpath(genpath('GDA'))
 
 load('dataset.mat');
 X=dataset(:,1:30);
@@ -31,6 +32,11 @@ elseif option == 3
     gamma=[0.01 0.1 1 10 100];
     box=[0.01 0.1 1 10 100];
     [sensitivity, specificity, accuracy, efficiency] = SvmModel(X,Y,folds,gamma,box);
+elseif option == 4
+    X=X+1;
+    Y=Y+1;
+    functionType ={'linear','diaglinear','diagquadratic'};
+    [sensitivity, specificity, accuracy, efficiency] = GDAModel(X,Y,folds,functionType);
 elseif option == 5
      epochs=[100 400 800 1000];
      neurons=[50 55 60 65 70];
