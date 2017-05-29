@@ -15,13 +15,14 @@ addpath(genpath('SVM'))
 addpath(genpath('RNA'))
 addpath(genpath('GDA'))
 addpath(genpath('FISHER'))
+addpath(genpath('SFS'))
 
 load('dataset.mat');
 X=dataset(:,1:30);
 Y=dataset(:,end);
 folds = 10;
 
-option=input('MENU PRINCIPAL\n1. k vecinos más cercanos \n2. Random Forest \n3. Máquina de Soporte Vectorial \n4. Funciones Discriminantes Gaussianas \n5. Redes neuronales \n6. Discriminante de Fisher \n7. Correlación de Pearson \n8. SFS \nSeleccione una opción:  ');
+option=input('MENU PRINCIPAL\n1. k vecinos más cercanos \n2. Random Forest \n3. Máquina de Soporte Vectorial \n4. Funciones Discriminantes Gaussianas \n5. Redes neuronales \n6. Discriminante de Fisher \n7. Selecci�n SFS \n8. PCA  \nSeleccione una opción:  ');
 
 if option == 1
    neighbors=[1,3,5,7,9,11,13];
@@ -36,8 +37,8 @@ elseif option == 3
 elseif option == 4
     X=X+1;
     Y=Y+1;
-    %functionType ={'linear','diaglinear','quadratic'}; %With quadractic do
-    %not converge
+    %With quadractic do not converge
+    %functionType ={'linear','diaglinear','quadratic'}; 
     functionType ={'linear','diaglinear'};
     [sensitivity, specificity, accuracy, efficiency] = GDAModel(X,Y,folds,functionType);
 elseif option == 5
@@ -50,4 +51,6 @@ elseif option == 6
     stem(coeff);
     text = ['Indice de Fisher: ', num2str(coeff)];
     disp(text);
+elseif option == 7
+    features = SFSSelection(X,Y);
 end
