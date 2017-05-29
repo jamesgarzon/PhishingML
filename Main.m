@@ -14,6 +14,7 @@ addpath(genpath('RANDOM_FORES5T'))
 addpath(genpath('SVM'))
 addpath(genpath('RNA'))
 addpath(genpath('GDA'))
+addpath(genpath('FISHER'))
 
 load('dataset.mat');
 X=dataset(:,1:30);
@@ -35,11 +36,18 @@ elseif option == 3
 elseif option == 4
     X=X+1;
     Y=Y+1;
-    functionType ={'linear','diaglinear','diagquadratic'};
+    %functionType ={'linear','diaglinear','quadratic'}; %With quadractic do
+    %not converge
+    functionType ={'linear','diaglinear'};
     [sensitivity, specificity, accuracy, efficiency] = GDAModel(X,Y,folds,functionType);
 elseif option == 5
      epochs=[100 400 800 1000];
      neurons=[50 55 60 65 70];
      [sensitivity, specificity, accuracy, efficiency] = RNAModel(X,Y,folds,neurons, epochs);
      retults = [sensitivity, specificity, accuracy, efficiency];
+elseif option == 6
+    coeff = FisherSelection(X,Y);
+    stem(coeff);
+    text = ['Indice de Fisher: ', num2str(coeff)];
+    disp(text);
 end
