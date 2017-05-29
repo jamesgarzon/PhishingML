@@ -6,9 +6,7 @@ function [finalSensitivity, finalSpecificity, finalAccuracy, finalEfficiency] = 
     sensitivity=zeros(functionTypesSize,folds);
     specificity=zeros(functionTypesSize,folds);
     accuracy=zeros(functionTypesSize,folds);
-    efficiency=zeros(functionTypesSize,folds);
-    
-    
+    efficiency=zeros(functionTypesSize,folds);  
     
     for functionType=1:functionTypesSize
         for fold=1:folds
@@ -19,10 +17,6 @@ function [finalSensitivity, finalSpecificity, finalAccuracy, finalEfficiency] = 
             Ytrain=y(partition.training(fold));
             Ytest=y(partition.test(fold));
 
-            %Yesti=KnnTrain(Xtest,Xtrain,Ytrain,neighbors(neighbor));
-            %modeloRF=TrainFOREST(trees(tree),Xtrain,Ytrain');
-            %Yesti=testFOREST(modeloRF,Xtest);
-            %Yesti=GDATrain(Xtrain,Ytrain,functionTypes(functionType));
             Yesti = GDATrain(Xtest, Xtrain, Ytrain, functionTypes(functionType));
             
             FN=(sum(Yesti~=Ytest))-(sum(Yesti==-1 & Yesti~=Ytest));
