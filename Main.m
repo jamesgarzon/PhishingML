@@ -46,7 +46,7 @@ elseif option == 5
      [sensitivity, specificity, accuracy, efficiency] = RNAModel(X,Y,folds,neurons, epochs);
      retults = [sensitivity, specificity, accuracy, efficiency];
 elseif option == 6
-    coeff = FisherSeleccion(X,Y);
+    coeff = FisherSelection(X,Y);
     stem(coeff);
     text = ['Indice de Fisher: ', num2str(coeff)];
     disp(text);

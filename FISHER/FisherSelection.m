@@ -1,4 +1,4 @@
-function coef = FisherSeleccion( X,Y )
+function coef = FisherSelection( X,Y )
 
 X = zscore(X);
     
