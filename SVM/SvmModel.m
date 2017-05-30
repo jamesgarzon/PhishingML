@@ -6,9 +6,12 @@ function [finalSensitivity, finalSpecificity, finalaccuracy, finalEfficiency] = 
     specificity=zeros(5,folds);
     accuracy=zeros(5,folds);
     efficiency=zeros(5,folds);
-
-  for boxind=1:5
-    for gammaind=1:5
+    
+    len_gamma = size(gamma,1);
+    len_box = size(box,1);
+    
+  for boxind=1:len_box
+    for gammaind=1:len_gamma
         for fold=1:folds
             rng('default');
             particion=cvpartition(sampleSize,'Kfold',folds);
