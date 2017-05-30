@@ -16,7 +16,7 @@ addpath(genpath('RNA'))
 addpath(genpath('GDA'))
 addpath(genpath('FISHER'))
 addpath(genpath('SFS'))
-
+addpath(genpath('PCA'))
 load('dataset.mat');
 X=dataset(:,1:30);
 Y=dataset(:,end);
@@ -60,5 +60,8 @@ elseif option == 7
     box=100;
     [sensitivity2, specificity2, accuracy2, efficiency2] = SvmModel(X,Y,folds,gamma,box);
 elseif option == 8
-    
+    features = SFSSelection(X,Y);
+elseif option == 8
+    VarianceLevel = 95;
+    [coefCompPrincipals, numCompAdmiteds] = extractionPCA(X,VarianceLevel );
 end
