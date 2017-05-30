@@ -16,7 +16,7 @@ addpath(genpath('RNA'))
 addpath(genpath('GDA'))
 addpath(genpath('FISHER'))
 addpath(genpath('SFS'))
-
+addpath(genpath('PCA'))
 load('dataset.mat');
 X=dataset(:,1:30);
 Y=dataset(:,end);
@@ -35,8 +35,6 @@ elseif option == 3
     box=[0.01 0.1 1 10 100];
     [sensitivity, specificity, accuracy, efficiency] = SvmModel(X,Y,folds,gamma,box);
 elseif option == 4
-    X=X+1;
-    Y=Y+1;
     %With quadractic do not converge
     %functionType ={'linear','diaglinear','quadratic'}; 
     functionType ={'linear','diaglinear'};
@@ -53,4 +51,7 @@ elseif option == 6
     disp(text);
 elseif option == 7
     features = SFSSelection(X,Y);
+elseif option == 8
+    VarianceLevel = 95;
+    [coefCompPrincipals, numCompAdmiteds] = extractionPCA(X,VarianceLevel );
 end
