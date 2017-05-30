@@ -1,9 +1,9 @@
-function coef = FisherSelection( X,Y )
+function [coef, correlacionPearson] = FisherSelection( X,Y )
 
 X = zscore(X);
     
     alpha = 0.05;
-    [correlacion,p]= corrcoef([X,Y],'alpha',alpha);
+    [correlacionPearson,p]= corrcoef([X,Y],'alpha',alpha);
     
     indicesClase0 = find(Y == 1);
     indicesClase1 = find(Y == -1);
