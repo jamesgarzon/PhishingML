@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % PHISHING - FINAL PROJECT        %
 % Developed by:                   %
-% James GarzÃ³n                    %
+% James Garzón                    %
 % Yoiner Gomez                    %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -22,7 +22,7 @@ X=dataset(:,1:30);
 Y=dataset(:,end);
 folds = 10;
 
-option=input('MENU PRINCIPAL\n1. k vecinos mÃ¡s cercanos \n2. Random Forest \n3. MÃ¡quina de Soporte Vectorial \n4. Funciones Discriminantes Gaussianas \n5. Redes neuronales \n6. Discriminante de Fisher \n7. Selección SFS \n8. PCA  \nSeleccione una opciÃ³n:  ');
+option=input('MENU PRINCIPAL\n1. k vecinos más cercanos \n2. Random Forest \n3. Máquina de Soporte Vectorial \n4. Funciones Discriminantes Gaussianas \n5. Redes neuronales \n6. Discriminante de Fisher \n7. Selección SFS \n8. PCA  \nSeleccione una opción:  ');
 
 if option == 1
    neighbors=[1,3,5,7,9,11,13];
@@ -50,16 +50,6 @@ elseif option == 6
     text = ['Indice de Fisher: ', num2str(coeff)];
     disp(text);
 elseif option == 7
-    %features = SFSSelection(X,Y);
-    load('best_dataset.mat');
-    X1=best_dataset(:,1:16);
-    Y2=best_dataset(:,end);
-    %neighbors=3;
-    %[sensitivity_knn2, specificity_knn2, accuracy_knn2, efficiency_knn2] = KnnModel(X,Y,folds,neighbors);
-    gamma=10;
-    box=100;
-    [sensitivity2, specificity2, accuracy2, efficiency2] = SvmModel(X,Y,folds,gamma,box);
-elseif option == 8
     features = SFSSelection(X,Y);
 elseif option == 8
     VarianceLevel = 95;
