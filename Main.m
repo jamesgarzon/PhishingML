@@ -35,12 +35,10 @@ elseif option == 3
     box=[0.01 0.1 1 10 100];
     [sensitivity, specificity, accuracy, efficiency] = SvmModel(X,Y,folds,gamma,box);
 elseif option == 4
-    X=X+1;
-    Y=Y+1;
     %With quadractic do not converge
     %functionType ={'linear','diaglinear','quadratic'}; 
     functionType ={'linear','diaglinear'};
-    [sensitivity, specificity, accuracy, efficiency] = GDAModel(X,Y,folds,functionType);
+    [sensitivity_gda, specificity_gda, accuracy_gda, efficiency_gda] = GDAModel(X,Y,folds,functionType);
 elseif option == 5
      epochs=[100 400 800 1000];
      neurons=[50 55 60 65 70];
@@ -52,5 +50,15 @@ elseif option == 6
     text = ['Indice de Fisher: ', num2str(coeff)];
     disp(text);
 elseif option == 7
-    features = SFSSelection(X,Y);
+    %features = SFSSelection(X,Y);
+    load('best_dataset.mat');
+    X1=best_dataset(:,1:16);
+    Y2=best_dataset(:,end);
+    %neighbors=3;
+    %[sensitivity_knn2, specificity_knn2, accuracy_knn2, efficiency_knn2] = KnnModel(X,Y,folds,neighbors);
+    gamma=10;
+    box=100;
+    [sensitivity2, specificity2, accuracy2, efficiency2] = SvmModel(X,Y,folds,gamma,box);
+elseif option == 8
+    
 end
